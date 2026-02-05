@@ -6,6 +6,7 @@ namespace Gameplay.Window
     [RequireComponent(typeof(Animator))]
     public sealed class WindowAnimator : MonoBehaviour
     {
+        [Header("Config")]
         [SerializeField] private string openStateName = "Windows_Open";
         [SerializeField] private string closeStateName = "Windows_Close";
 

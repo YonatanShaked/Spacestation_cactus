@@ -7,6 +7,7 @@ namespace Gameplay.AC
 {
     public sealed class AcAnimator : MonoBehaviour
     {
+        [Header("References")]
         [SerializeField] private GameConfig config;
         [SerializeField] private Animation fanAnimation;
         [SerializeField] private GameObject pulseEffectObject;
@@ -16,23 +17,9 @@ namespace Gameplay.AC
 
         private void Awake()
         {
-            if (config == null)
+            if (config == null || fanAnimation == null || pulseEffectObject == null)
             {
-                Debug.LogError($"{nameof(AcAnimator)} missing GameConfig reference.", this);
-                enabled = false;
-                return;
-            }
-
-            if (fanAnimation == null)
-            {
-                Debug.LogError($"{nameof(AcAnimator)} missing fanAnimation reference.", this);
-                enabled = false;
-                return;
-            }
-
-            if (pulseEffectObject == null)
-            {
-                Debug.LogError($"{nameof(AcAnimator)} missing pulseEffectObject reference.", this);
+                Debug.LogError($"{nameof(AcAnimator)} missing references.", this);
                 enabled = false;
                 return;
             }
@@ -72,7 +59,21 @@ namespace Gameplay.AC
 
         private void OnAcPulseTriggered()
         {
-            // Extra guard: even if someone fires the event twice, don’t overlap pulses
+            IEnumerator _playAcPulse()
+            {
+                _pulsePlaying = true;
+
+                pulseEffectObject.SetActive(true);
+
+                float duration = Mathf.Max(0.05f, config.acPulseEffectDurationSeconds);
+                yield return new WaitForSeconds(duration);
+
+                pulseEffectObject.SetActive(false);
+
+                _pulsePlaying = false;
+                _pulseRoutine = null;
+            }
+
             if (_pulsePlaying)
                 return;
 
@@ -82,22 +83,7 @@ namespace Gameplay.AC
                 _pulseRoutine = null;
             }
 
-            _pulseRoutine = StartCoroutine(PulseRoutine());
-        }
-
-        private IEnumerator PulseRoutine()
-        {
-            _pulsePlaying = true;
-
-            pulseEffectObject.SetActive(true);
-
-            float duration = Mathf.Max(0.05f, config.acPulseEffectDurationSeconds);
-            yield return new WaitForSeconds(duration);
-
-            pulseEffectObject.SetActive(false);
-
-            _pulsePlaying = false;
-            _pulseRoutine = null;
+            _pulseRoutine = StartCoroutine(_playAcPulse());
         }
     }
 }

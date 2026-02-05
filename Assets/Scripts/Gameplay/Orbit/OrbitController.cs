@@ -6,6 +6,7 @@ namespace Gameplay.Orbit
 {
     public sealed class OrbitController : MonoBehaviour
     {
+        [Header("References")]
         [SerializeField] private GameConfig config;
 
         private float _timer;
@@ -17,12 +18,12 @@ namespace Gameplay.Orbit
             {
                 Debug.LogError($"{nameof(OrbitController)} missing config.", this);
                 enabled = false;
+                return;
             }
         }
 
         private void Start()
         {
-            // Start in Sunlit by default (you can choose either)
             SetPhase(OrbitPhase.Sunlit);
             _timer = 0f;
         }

@@ -5,6 +5,7 @@ namespace UI
 {
     public sealed class GameoverScreenHandler : MonoBehaviour
     {
+        [Header("References")]
         [SerializeField] private GameObject gameoverScreen;
 
         private void Awake()

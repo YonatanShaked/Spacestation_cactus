@@ -8,11 +8,10 @@ namespace Gameplay.Upgrades
 {
     public sealed class AcPulseController : MonoBehaviour
     {
+        [Header("References")]
         [SerializeField] private GameConfig config;
         [SerializeField] private ScoreSystem score;
         [SerializeField] private CactusThermodynamics cactus;
-
-        private OrbitPhase _orbitPhase = OrbitPhase.Sunlit;
 
         private bool _acPulsePurchased;
         private bool _pulseReady;
@@ -23,6 +22,7 @@ namespace Gameplay.Upgrades
             {
                 Debug.LogError($"{nameof(AcPulseController)} missing references.", this);
                 enabled = false;
+                return;
             }
         }
 
@@ -42,7 +42,6 @@ namespace Gameplay.Upgrades
 
         private void Start()
         {
-            // If purchased at runtime, Start will get state via event; until then, keep false.
             Publish();
         }
 
@@ -55,11 +54,10 @@ namespace Gameplay.Upgrades
         {
             if (!CanPulse())
             {
-                Debug.Log("[AC Pulse] Pulse blocked (not purchased / not ready / cactus dead).");
+                Debug.Log("[AC Pulse] Pulse blocked.");
                 return;
             }
 
-            // Costs 20 points (spec).
             if (!score.TrySpend(config.acPulseCostPoints))
             {
                 Debug.Log($"[AC Pulse] Not enough points. Need {config.acPulseCostPoints}, have {score.Score}.");
@@ -69,7 +67,7 @@ namespace Gameplay.Upgrades
             cactus.ApplyInstantCooling(config.acPulseTempDropC);
 
             _pulseReady = false;
-            Debug.Log("[AC Pulse] USED -> now Used until next Sunlit.");
+            Debug.Log("[AC Pulse] Now Used until next Sunlit.");
             Publish();
 
             GameEvents.RaiseAcPulseTriggered();
@@ -77,13 +75,10 @@ namespace Gameplay.Upgrades
 
         private void OnOrbitPhaseChanged(OrbitPhase phase)
         {
-            _orbitPhase = phase;
-
-            // Resets at start of next Sunlit (spec).
             if (phase == OrbitPhase.Sunlit && _acPulsePurchased)
             {
                 _pulseReady = true;
-                Debug.Log("[AC Pulse] Reset -> Ready (new Sunlit).");
+                Debug.Log("[AC Pulse] Ready (new Sunlit).");
                 Publish();
             }
         }
@@ -92,16 +87,13 @@ namespace Gameplay.Upgrades
         {
             _acPulsePurchased = purchased;
             if (_acPulsePurchased)
-            {
-                // Make it available immediately; it will also reset each Sunlit.
                 _pulseReady = true;
-            }
+
             Publish();
         }
 
         private void OnCactusDied()
         {
-            // Keep state; just can't use while dead.
             Publish();
         }
 

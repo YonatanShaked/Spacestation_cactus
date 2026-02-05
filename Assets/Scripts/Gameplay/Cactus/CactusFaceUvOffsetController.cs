@@ -1,18 +1,19 @@
 using Core.Events;
 using Gameplay.Config;
+using System;
 using UnityEngine;
 
 namespace Gameplay.Cactus
 {
     public sealed class CactusFaceUvOffsetController : MonoBehaviour
     {
+        [Header("References")]
         [SerializeField] private GameConfig config;
         [SerializeField] private Renderer cactusRenderer;
 
         private bool _autoFailedThisDawn;
         private float _temperatureC;
         private bool _isCrying;
-
         private MaterialPropertyBlock _mpb;
 
         private static readonly int BaseMapStId = Shader.PropertyToID("_BaseMap_ST");
@@ -54,17 +55,15 @@ namespace Gameplay.Cactus
 
         private void Evaluate()
         {
-            bool inSafeRange =
+            bool shouldCry =
+                _autoFailedThisDawn &&
                 _temperatureC >= config.safeMinTempC &&
                 _temperatureC <= config.safeMaxTempC;
-
-            bool shouldCry = _autoFailedThisDawn && inSafeRange;
 
             if (shouldCry == _isCrying)
                 return;
 
-            if (shouldCry) Cry();
-            else Smile();
+            (shouldCry ? (Action)Cry : Smile)();
         }
 
         private void Cry()

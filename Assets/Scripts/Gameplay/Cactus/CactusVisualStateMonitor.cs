@@ -6,6 +6,7 @@ namespace Gameplay.Cactus
 {
     public sealed class CactusVisualStateMonitor : MonoBehaviour
     {
+        [Header("References")]
         [SerializeField] private GameConfig config;
         [SerializeField] private GameObject flower;
         [SerializeField] private GameObject thorns;
@@ -18,6 +19,7 @@ namespace Gameplay.Cactus
             if (config == null || flower == null || thorns == null)
             {
                 enabled = false;
+                return;
             }
         }
 

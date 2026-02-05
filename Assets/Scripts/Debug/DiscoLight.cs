@@ -5,6 +5,7 @@ namespace Debugging
     [RequireComponent(typeof(Light))]
     public sealed class DiscoLight : MonoBehaviour
     {
+        [Header("Config")]
         [SerializeField] private float colorSpeed = 1.5f;
         [SerializeField] private float intensityPulse = 0f;
         [SerializeField] private float pulseSpeed = 3f;

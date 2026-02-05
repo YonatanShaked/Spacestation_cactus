@@ -6,13 +6,12 @@ namespace Gameplay.Upgrades
 {
     public sealed class UpgradeSystem : MonoBehaviour
     {
+        [Header("References")]
         [SerializeField] private GameConfig config;
 
-        [Header("Runtime State (Read-only)")]
-        [SerializeField] private int autoWindowLevel;
-        [SerializeField] private bool acPurchased;
-        [SerializeField] private bool acPulsePurchased;
-
+        private int _autoWindowLevel;
+        private bool _acPurchased;
+        private bool _acPulsePurchased;
         private int _maxAutoWindowLevel;
 
         private void Awake()
@@ -25,7 +24,7 @@ namespace Gameplay.Upgrades
             }
 
             _maxAutoWindowLevel = CalculateMaxAutoWindowLevel();
-            autoWindowLevel = Mathf.Clamp(autoWindowLevel, 0, _maxAutoWindowLevel);
+            _autoWindowLevel = Mathf.Clamp(_autoWindowLevel, 0, _maxAutoWindowLevel);
         }
 
         private void Start()
@@ -35,65 +34,62 @@ namespace Gameplay.Upgrades
 
         public void BuyAutoWindowUpgrade()
         {
-            if (autoWindowLevel >= _maxAutoWindowLevel)
+            if (_autoWindowLevel >= _maxAutoWindowLevel)
             {
-                Debug.Log($"[Upgrades] Auto Window already at max. Level={autoWindowLevel}, FailChance={ComputeAutoOpenFailChance():P0}");
+                Debug.Log($"[Upgrades] Auto Window already at max. Level={_autoWindowLevel}, FailChance={ComputeAutoOpenFailChance():P0}");
                 return;
             }
 
-            autoWindowLevel++;
+            _autoWindowLevel++;
             float chance = ComputeAutoOpenFailChance();
 
-            Debug.Log($"[Upgrades] Auto Window upgrade purchased. Level={autoWindowLevel}/{_maxAutoWindowLevel}, FailChance={chance:P0}");
+            Debug.Log($"[Upgrades] Auto Window upgrade purchased. Level={_autoWindowLevel}/{_maxAutoWindowLevel}, FailChance={chance:P0}");
             GameEvents.RaiseAutoOpenFailChanceChanged(chance);
         }
 
         public void BuyAc()
         {
-            if (acPurchased)
+            if (_acPurchased)
             {
                 Debug.Log("[Upgrades] AC already purchased.");
                 return;
             }
 
-            acPurchased = true;
+            _acPurchased = true;
             Debug.Log("[Upgrades] AC purchased -> max alive temp becomes 115C.");
             GameEvents.RaiseAcPurchasedChanged(true);
         }
 
         public void BuyAcPulseUpgrade()
         {
-            if (!acPurchased)
+            if (!_acPurchased)
             {
                 Debug.Log("[Upgrades] Cannot buy AC Pulse without buying AC first.");
                 return;
             }
 
-            if (acPulsePurchased)
+            if (_acPulsePurchased)
             {
                 Debug.Log("[Upgrades] AC Pulse already purchased.");
                 return;
             }
 
-            acPulsePurchased = true;
+            _acPulsePurchased = true;
             Debug.Log("[Upgrades] AC Pulse upgrade purchased.");
             GameEvents.RaiseAcPulsePurchasedChanged(true);
-
-            // Optional: let AcPulseController decide readiness; harmless for now.
             GameEvents.RaiseAcPulseReadyChanged(true);
         }
 
         public float ComputeAutoOpenFailChance()
         {
-            float reduced = config.baseAutoOpenFailChance - (autoWindowLevel * config.autoOpenFailChanceReductionPerUpgrade);
+            float reduced = config.baseAutoOpenFailChance - (_autoWindowLevel * config.autoOpenFailChanceReductionPerUpgrade);
             return Mathf.Max(config.minAutoOpenFailChance, reduced);
         }
 
-        public int AutoWindowLevel => autoWindowLevel;
+        public int AutoWindowLevel => _autoWindowLevel;
         public int MaxAutoWindowLevel => _maxAutoWindowLevel;
-
-        public bool AcPurchased => acPurchased;
-        public bool AcPulsePurchased => acPulsePurchased;
+        public bool AcPurchased => _acPurchased;
+        public bool AcPulsePurchased => _acPulsePurchased;
 
         private int CalculateMaxAutoWindowLevel()
         {
@@ -113,8 +109,8 @@ namespace Gameplay.Upgrades
         private void PublishAll()
         {
             GameEvents.RaiseAutoOpenFailChanceChanged(ComputeAutoOpenFailChance());
-            GameEvents.RaiseAcPurchasedChanged(acPurchased);
-            GameEvents.RaiseAcPulsePurchasedChanged(acPulsePurchased);
+            GameEvents.RaiseAcPurchasedChanged(_acPurchased);
+            GameEvents.RaiseAcPulsePurchasedChanged(_acPulsePurchased);
         }
     }
 }

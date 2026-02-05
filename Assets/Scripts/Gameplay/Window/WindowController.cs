@@ -7,6 +7,7 @@ namespace Gameplay.Window
 {
     public sealed class WindowController : MonoBehaviour
     {
+        [Header("References")]
         [SerializeField] private GameConfig config;
 
         private WindowState _state = WindowState.Closed;
@@ -31,6 +32,7 @@ namespace Gameplay.Window
             {
                 Debug.LogError($"{nameof(WindowController)} missing config.", this);
                 enabled = false;
+                return;
             }
         }
 
@@ -44,14 +46,9 @@ namespace Gameplay.Window
             _orbitPhase = phase;
 
             if (phase == OrbitPhase.Sunlit)
-            {
                 TryAutoOpenAtDawn();
-            }
             else
-            {
-                // On Eclipse: window always closes
                 CloseWindowInternal(autoFailedThisDawn: false);
-            }
         }
 
         private void TryAutoOpenAtDawn()
@@ -79,9 +76,8 @@ namespace Gameplay.Window
             return Mathf.Max(config.minAutoOpenFailChance, reduced);
         }
 
-        // Public “commands” (later your UI/XR buttons will call these)
         public bool CanManuallyOpen()
-            => _orbitPhase == OrbitPhase.Sunlit && _state == WindowState.Closed && _autoFailedThisDawn;
+            => (_orbitPhase == OrbitPhase.Sunlit) && (_state == WindowState.Closed) && _autoFailedThisDawn;
 
         public bool CanClose()
             => _state == WindowState.Open;
@@ -110,7 +106,6 @@ namespace Gameplay.Window
             Debug.Log("[Window] Manually closed.");
         }
 
-        // Upgrade hook (later purchase system calls this)
         public void SetAutoWindowUpgradeLevel(int level)
         {
             _autoWindowUpgradeLevel = Mathf.Max(0, level);

@@ -5,6 +5,7 @@ namespace Gameplay.Upgrades
 {
     public sealed class UpgradeToWindowBridge : MonoBehaviour
     {
+        [Header("References")]
         [SerializeField] private UpgradeSystem upgrades;
         [SerializeField] private WindowController window;
 
@@ -14,6 +15,7 @@ namespace Gameplay.Upgrades
             {
                 Debug.LogError($"{nameof(UpgradeToWindowBridge)} missing references.", this);
                 enabled = false;
+                return;
             }
         }
 

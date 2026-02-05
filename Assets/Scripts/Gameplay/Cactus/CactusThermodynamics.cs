@@ -6,6 +6,7 @@ namespace Gameplay.Cactus
 {
     public sealed class CactusThermodynamics : MonoBehaviour
     {
+        [Header("References")]
         [SerializeField] private GameConfig config;
 
         private float _tempC;
@@ -53,14 +54,12 @@ namespace Gameplay.Cactus
             if (!_isAlive)
                 return;
 
-            // Temperature update based on window state (spec).
             float delta = (_windowState == WindowState.Open)
                 ? config.tempIncreasePerSecondWhenOpen
                 : -config.tempDecreasePerSecondWhenClosed;
 
             _tempC += delta * Time.deltaTime;
 
-            // Alive range depends on AC purchase (spec).
             float minAlive = config.baseMinAliveTempC;
             float maxAlive = _acPurchased ? config.acMaxAliveTempC : config.baseMaxAliveTempC;
 
@@ -85,7 +84,8 @@ namespace Gameplay.Cactus
 
         public void ApplyInstantCooling(float degreesC)
         {
-            if (!_isAlive) return;
+            if (!_isAlive)
+                return;
 
             _tempC -= Mathf.Abs(degreesC);
             Debug.Log($"[Cactus] Instant cooling applied: -{Mathf.Abs(degreesC):0.0}C -> {_tempC:0.0}C");

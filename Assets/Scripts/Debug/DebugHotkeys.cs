@@ -9,6 +9,7 @@ namespace Debugging
 {
     public sealed class DebugHotkeys : MonoBehaviour
     {
+        [Header("References")]
         [SerializeField] private UpgradeSystem upgrades;
         [SerializeField] private UpgradeToWindowBridge bridge;
         [SerializeField] private WindowController window;

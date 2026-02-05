@@ -6,9 +6,11 @@ namespace Gameplay.Scoring
 {
     public sealed class ScoreSystem : MonoBehaviour
     {
+        [Header("References")]
         [SerializeField] private GameConfig config;
 
         private int _score;
+        private float _scoreRemainder;
         private int _multiplier = 1;
         private int _lastPublishedStreakWholeSeconds = -1;
 
@@ -17,8 +19,6 @@ namespace Gameplay.Scoring
         private bool _isAlive = true;
 
         private float _temperatureC;
-
-        // Streak time inside safe range 10..60 (spec).
         private float _safeStreakSeconds;
 
         public int Score => _score;
@@ -30,6 +30,7 @@ namespace Gameplay.Scoring
             {
                 Debug.LogError($"{nameof(ScoreSystem)} missing config.", this);
                 enabled = false;
+                return;
             }
         }
 
@@ -56,25 +57,25 @@ namespace Gameplay.Scoring
 
         private void Update()
         {
-            // Update multiplier streak regardless of day/night (night alone doesn't reset per spec).
             UpdateMultiplierStreak(Time.deltaTime);
 
             if (ShouldAccumulateScore())
             {
                 float pointsThisFrame = config.pointsPerSecond * _multiplier * Time.deltaTime;
-
-                // Keep score as int, but accumulate fractional points smoothly:
                 AddScore(pointsThisFrame);
             }
         }
 
         public bool TrySpend(int cost)
         {
-            if (cost <= 0) return true;
-            if (_score < cost) return false;
+            if (cost <= 0)
+                return true;
+
+            if (_score < cost)
+                return false;
 
             _score -= cost;
-            _scoreRemainder = 0f; // optional: keep it simple and deterministic
+            _scoreRemainder = 0f;
             GameEvents.RaiseScoreChanged(_score);
             return true;
         }
@@ -91,7 +92,7 @@ namespace Gameplay.Scoring
             if (!_isAlive)
                 return;
 
-            bool inSafeRange = _temperatureC >= config.safeMinTempC && _temperatureC <= config.safeMaxTempC;
+            bool inSafeRange = (_temperatureC >= config.safeMinTempC) && (_temperatureC <= config.safeMaxTempC);
 
             if (!inSafeRange)
             {
@@ -120,9 +121,6 @@ namespace Gameplay.Scoring
 
             PublishStreakIfChanged();
         }
-
-        // Fractional accumulation helper (no GC, stable).
-        private float _scoreRemainder;
 
         private void AddScore(float points)
         {
@@ -158,12 +156,6 @@ namespace Gameplay.Scoring
             GameEvents.RaiseTempSafeStreakChanged(_safeStreakSeconds);
         }
 
-        private void OnOrbitPhaseChanged(OrbitPhase phase) => _orbitPhase = phase;
-
-        private void OnWindowStateChanged(WindowState state, bool _) => _windowState = state;
-
-        private void OnTemperatureChanged(float tempC) => _temperatureC = tempC;
-
         private void OnCactusDied()
         {
             _isAlive = false;
@@ -182,5 +174,11 @@ namespace Gameplay.Scoring
             _lastPublishedStreakWholeSeconds = -1;
             PublishStreakIfChanged();
         }
+
+        private void OnOrbitPhaseChanged(OrbitPhase phase) => _orbitPhase = phase;
+
+        private void OnWindowStateChanged(WindowState state, bool _) => _windowState = state;
+
+        private void OnTemperatureChanged(float tempC) => _temperatureC = tempC;
     }
 }
