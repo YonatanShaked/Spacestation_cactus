@@ -11,6 +11,10 @@ namespace Gameplay.Cactus
         [SerializeField] private GameConfig config;
         [SerializeField] private Renderer cactusRenderer;
 
+        private const float AtlasTilingX = 0.5f;
+        private const float CryOffsetX = 0.0f;
+        private const float SmileOffsetX = 0.5f;
+
         private bool _autoFailedThisDawn;
         private float _temperatureC;
         private bool _isCrying;
@@ -69,19 +73,19 @@ namespace Gameplay.Cactus
         private void Cry()
         {
             _isCrying = true;
-            SetFaceOffset(0.0f);
+            SetFaceOffset(CryOffsetX);
         }
 
         private void Smile()
         {
             _isCrying = false;
-            SetFaceOffset(0.5f);
+            SetFaceOffset(SmileOffsetX);
         }
 
         private void SetFaceOffset(float offsetX)
         {
             cactusRenderer.GetPropertyBlock(_mpb);
-            _mpb.SetVector(BaseMapStId, new Vector4(0.5f, 1f, offsetX, 0f));
+            _mpb.SetVector(BaseMapStId, new Vector4(AtlasTilingX, 1f, offsetX, 0f));
             cactusRenderer.SetPropertyBlock(_mpb);
         }
     }
