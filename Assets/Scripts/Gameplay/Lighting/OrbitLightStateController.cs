@@ -82,7 +82,6 @@ namespace Gameplay.Lighting
             if (orbit == OrbitPhase.Eclipse)
                 return LightState.Eclipse;
 
-            // Sunlit:
             return window == WindowState.Open
                 ? LightState.SunlitWindowOpen
                 : LightState.SunlitWindowClosed;
