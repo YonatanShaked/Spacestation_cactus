@@ -48,25 +48,29 @@ You can watch an [example gameplay video](https://drive.google.com/file/d/1eBZv8
 The following third-party assets were used in the project:
 
 ### 3D Models
+
 - Philips TV model  
-  https://free3d.com/3d-model/-philips-379589.html
+  <https://free3d.com/3d-model/-philips-379589.html>
 - Air Conditioner model  
-  https://free3d.com/3d-model/airconditioner-v4--671561.html
+  <https://free3d.com/3d-model/airconditioner-v4--671561.html>
 
 ### Textures & Materials
+
 - Blue Metal Plate  
-  https://polyhaven.com/a/blue_metal_plate
+  <https://polyhaven.com/a/blue_metal_plate>
 - Corrugated Iron  
-  https://polyhaven.com/a/corrugated_iron
+  <https://polyhaven.com/a/corrugated_iron>
 - Spaceship Panels  
-  https://freepbr.com/product/spaceship-panels/
+  <https://freepbr.com/product/spaceship-panels/>
 
 ### Skybox
+
 - Deep Space Skybox Pack (Unity Asset Store)  
-  https://assetstore.unity.com/packages/2d/textures-materials/deep-space-skybox-pack-11056
+  <https://assetstore.unity.com/packages/2d/textures-materials/deep-space-skybox-pack-11056>
 
 ### Packages
+
 - glTFast (for glTF model importing)  
-  https://github.com/atteneder/glTFast
+  <https://github.com/atteneder/glTFast>
 
 All assets are used for **educational and non-commercial purposes** as part of this project.
