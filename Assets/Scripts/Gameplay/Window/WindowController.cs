@@ -13,18 +13,9 @@ namespace Gameplay.Window
         private WindowState _state = WindowState.Closed;
         private OrbitPhase _orbitPhase = OrbitPhase.Sunlit;
 
-        private int _autoWindowUpgradeLevel;
         private bool _autoFailedThisDawn;
 
-        private void OnEnable()
-        {
-            GameEvents.OrbitPhaseChanged += OnOrbitPhaseChanged;
-        }
-
-        private void OnDisable()
-        {
-            GameEvents.OrbitPhaseChanged -= OnOrbitPhaseChanged;
-        }
+        private float _autoOpenFailChance;
 
         private void Awake()
         {
@@ -34,11 +25,31 @@ namespace Gameplay.Window
                 enabled = false;
                 return;
             }
+
+            // Fallback (in case UpgradeSystem hasn't published yet)
+            _autoOpenFailChance = config.baseAutoOpenFailChance;
+        }
+
+        private void OnEnable()
+        {
+            GameEvents.OrbitPhaseChanged += OnOrbitPhaseChanged;
+            GameEvents.AutoOpenFailChanceChanged += OnAutoOpenFailChanceChanged;
+        }
+
+        private void OnDisable()
+        {
+            GameEvents.OrbitPhaseChanged -= OnOrbitPhaseChanged;
+            GameEvents.AutoOpenFailChanceChanged -= OnAutoOpenFailChanceChanged;
         }
 
         private void Start()
         {
             Publish();
+        }
+
+        private void OnAutoOpenFailChanceChanged(float chance)
+        {
+            _autoOpenFailChance = Mathf.Clamp01(chance);
         }
 
         private void OnOrbitPhaseChanged(OrbitPhase phase)
@@ -70,11 +81,7 @@ namespace Gameplay.Window
             Debug.Log($"[Window] Auto-open SUCCESS at dawn. FailChance={failChance:P0}");
         }
 
-        private float GetAutoOpenFailChance()
-        {
-            float reduced = config.baseAutoOpenFailChance - (_autoWindowUpgradeLevel * config.autoOpenFailChanceReductionPerUpgrade);
-            return Mathf.Max(config.minAutoOpenFailChance, reduced);
-        }
+        private float GetAutoOpenFailChance() => _autoOpenFailChance;
 
         public bool CanManuallyOpen()
             => (_orbitPhase == OrbitPhase.Sunlit) && (_state == WindowState.Closed) && _autoFailedThisDawn;
@@ -106,13 +113,6 @@ namespace Gameplay.Window
             Debug.Log("[Window] Manually closed.");
         }
 
-        public void SetAutoWindowUpgradeLevel(int level)
-        {
-            _autoWindowUpgradeLevel = Mathf.Max(0, level);
-            float chance = GetAutoOpenFailChance();
-            GameEvents.RaiseAutoOpenFailChanceChanged(chance);
-        }
-
         private void OpenWindowInternal(bool autoFailedThisDawn)
         {
             _state = WindowState.Open;
@@ -128,7 +128,6 @@ namespace Gameplay.Window
         private void Publish()
         {
             GameEvents.RaiseWindowStateChanged(_state, _autoFailedThisDawn);
-            GameEvents.RaiseAutoOpenFailChanceChanged(GetAutoOpenFailChance());
         }
     }
 }

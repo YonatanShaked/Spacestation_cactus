@@ -11,7 +11,6 @@ namespace Debugging
     {
         [Header("References")]
         [SerializeField] private UpgradeSystem upgrades;
-        [SerializeField] private UpgradeToWindowBridge bridge;
         [SerializeField] private WindowController window;
         [SerializeField] private AcPulseController pulse;
         [SerializeField] private GameRestartController restart;
@@ -26,10 +25,7 @@ namespace Debugging
         private void Update()
         {
             if (_keyboard.digit1Key.wasPressedThisFrame)
-            {
                 upgrades.BuyAutoWindowUpgrade();
-                bridge.SyncAutoWindowLevel();
-            }
 
             if (_keyboard.digit2Key.wasPressedThisFrame)
                 upgrades.BuyAc();

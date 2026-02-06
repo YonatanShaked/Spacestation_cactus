@@ -41,10 +41,9 @@ namespace Gameplay.Upgrades
             }
 
             _autoWindowLevel++;
-            float chance = ComputeAutoOpenFailChance();
+            Debug.Log($"[Upgrades] Auto Window upgrade purchased. Level={_autoWindowLevel}/{_maxAutoWindowLevel}, FailChance={ComputeAutoOpenFailChance():P0}");
 
-            Debug.Log($"[Upgrades] Auto Window upgrade purchased. Level={_autoWindowLevel}/{_maxAutoWindowLevel}, FailChance={chance:P0}");
-            GameEvents.RaiseAutoOpenFailChanceChanged(chance);
+            PublishAutoOpenFailChance();
         }
 
         public void BuyAc()
@@ -76,6 +75,7 @@ namespace Gameplay.Upgrades
 
             _acPulsePurchased = true;
             Debug.Log("[Upgrades] AC Pulse upgrade purchased.");
+
             GameEvents.RaiseAcPulsePurchasedChanged(true);
             GameEvents.RaiseAcPulseReadyChanged(true);
         }
@@ -101,14 +101,17 @@ namespace Gameplay.Upgrades
                 return 0;
 
             float neededReduction = Mathf.Max(0f, baseFail - minFail);
-            int levels = Mathf.CeilToInt(neededReduction / step);
+            return Mathf.Max(0, Mathf.CeilToInt(neededReduction / step));
+        }
 
-            return Mathf.Max(0, levels);
+        private void PublishAutoOpenFailChance()
+        {
+            GameEvents.RaiseAutoOpenFailChanceChanged(ComputeAutoOpenFailChance());
         }
 
         private void PublishAll()
         {
-            GameEvents.RaiseAutoOpenFailChanceChanged(ComputeAutoOpenFailChance());
+            PublishAutoOpenFailChance();
             GameEvents.RaiseAcPurchasedChanged(_acPurchased);
             GameEvents.RaiseAcPulsePurchasedChanged(_acPulsePurchased);
         }
