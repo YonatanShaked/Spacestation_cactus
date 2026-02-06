@@ -44,5 +44,21 @@ namespace Core.Events
         public static void RaiseAcPulsePurchasedChanged(bool purchased) => AcPulsePurchasedChanged?.Invoke(purchased);
         public static void RaiseAcPulseReadyChanged(bool ready) => AcPulseReadyChanged?.Invoke(ready);
         public static void RaiseAcPulseTriggered() => AcPulseTriggered?.Invoke();
+
+        public static void ResetAll()
+        {
+            OrbitPhaseChanged = null;
+            WindowStateChanged = null;
+            TemperatureChanged = null;
+            CactusDied = null;
+            ScoreChanged = null;
+            MultiplierChanged = null;
+            TempSafeStreakChanged = null;
+            AutoOpenFailChanceChanged = null;
+            AcPurchasedChanged = null;
+            AcPulsePurchasedChanged = null;
+            AcPulseReadyChanged = null;
+            AcPulseTriggered = null;
+        }
     }
 }

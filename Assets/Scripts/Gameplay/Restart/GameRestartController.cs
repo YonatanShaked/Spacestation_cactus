@@ -1,3 +1,4 @@
+using Core.Events;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,8 +8,8 @@ namespace Gameplay.Restart
     {
         public void Restart()
         {
+            GameEvents.ResetAll();
             var scene = SceneManager.GetActiveScene();
-            Debug.Log("[Restart] Reloading scene: " + scene.name);
             SceneManager.LoadScene(scene.buildIndex);
         }
     }
