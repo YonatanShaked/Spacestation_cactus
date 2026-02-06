@@ -31,7 +31,6 @@ namespace Core.Events
         public static event Action<bool> AcPulseReadyChanged;
         public static event Action AcPulseTriggered;
 
-        // Publish helpers (keeps invocations in one place)
         public static void RaiseOrbitPhaseChanged(OrbitPhase phase) => OrbitPhaseChanged?.Invoke(phase);
         public static void RaiseWindowStateChanged(WindowState state, bool autoFailedThisDawn) => WindowStateChanged?.Invoke(state, autoFailedThisDawn);
         public static void RaiseTemperatureChanged(float tempC) => TemperatureChanged?.Invoke(tempC);
