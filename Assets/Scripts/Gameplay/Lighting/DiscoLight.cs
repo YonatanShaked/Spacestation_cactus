@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Debugging
+namespace Gameplay.Lighting
 {
     [RequireComponent(typeof(Light))]
     public sealed class DiscoLight : MonoBehaviour
