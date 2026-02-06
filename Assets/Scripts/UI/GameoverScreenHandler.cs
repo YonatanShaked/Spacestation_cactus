@@ -3,6 +3,11 @@ using UnityEngine;
 
 namespace UI
 {
+    /// <summary>
+    /// Controls the game-over UI screen.
+    /// Listens for the cactus death event and activates the game-over screen when the game ends.
+    /// Keeps UI logic isolated from gameplay systems.
+    /// </summary>
     public sealed class GameoverScreenHandler : MonoBehaviour
     {
         [Header("References")]

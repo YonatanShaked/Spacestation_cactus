@@ -5,6 +5,11 @@ using UnityEngine;
 
 namespace Gameplay.Cactus
 {
+    /// <summary>
+    /// Controls the cactus face visual state by offsetting UVs on a texture atlas.
+    /// Switches between smiling and crying faces based on window auto-open failure and safe temperature range.
+    /// Listens to window and temperature events and applies changes using a MaterialPropertyBlock.
+    /// </summary>
     public sealed class CactusFaceUvOffsetController : MonoBehaviour
     {
         [Header("References")]

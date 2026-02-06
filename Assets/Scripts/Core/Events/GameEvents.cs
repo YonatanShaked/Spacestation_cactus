@@ -5,6 +5,12 @@ namespace Core.Events
     public enum OrbitPhase { Sunlit, Eclipse }
     public enum WindowState { Open, Closed }
 
+    /// <summary>
+    /// Central static event hub implementing the Observer pattern.
+    /// Decouples core gameplay systems (window, cactus, scoring, upgrades, UI) by broadcasting state changes via events instead of direct references.
+    /// Events are raised by gameplay systems and consumed by UI, visuals, and secondary logic modules.
+    /// Because events are static, ResetAll() must be called on scene reload to avoid ghost listeners.
+    /// </summary>
     public static class GameEvents
     {
         // Orbit

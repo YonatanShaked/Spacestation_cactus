@@ -4,6 +4,11 @@ using UnityEngine;
 
 namespace Gameplay.Cactus
 {
+    /// <summary>
+    /// Monitors cactus visual states based on gameplay conditions.
+    /// Activates flower and thorn visuals according to current score and temperature thresholds defined in the game configuration.
+    /// Reacts to score and temperature events without direct coupling to gameplay logic.
+    /// </summary>
     public sealed class CactusVisualStateMonitor : MonoBehaviour
     {
         [Header("References")]

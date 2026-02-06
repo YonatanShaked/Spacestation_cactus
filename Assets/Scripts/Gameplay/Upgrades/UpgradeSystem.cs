@@ -4,6 +4,11 @@ using UnityEngine;
 
 namespace Gameplay.Upgrades
 {
+    /// <summary>
+    /// Manages all player upgrade logic and progression.
+    /// Handles purchase validation, upgrade limits, and derived gameplay effects such as auto-window fail chance and AC availability.
+    /// Publishes upgrade state changes via events to keep gameplay systems decoupled.
+    /// </summary>
     public sealed class UpgradeSystem : MonoBehaviour
     {
         [Header("References")]

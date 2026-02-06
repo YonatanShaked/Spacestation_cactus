@@ -1,5 +1,9 @@
 Shader "Custom/SpiningPotLogo"
 {
+    // Summary: Minimal URP forward-lit shader that renders a white base and a spinning logo overlay.
+    // The logo is sampled within a configurable UV rectangle, tinted via _LogoColor, and scrolled horizontally over time.
+    // Lighting is applied using a simple Lambert term against URP's main directional light to make the result respond to scene lighting.
+
     Properties
     {
         [MainColor] _BaseColor("Base Color", Color) = (1, 1, 1, 1)

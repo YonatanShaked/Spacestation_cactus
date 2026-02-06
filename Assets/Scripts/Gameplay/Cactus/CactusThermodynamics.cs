@@ -4,6 +4,11 @@ using UnityEngine;
 
 namespace Gameplay.Cactus
 {
+    /// <summary>
+    /// Simulates cactus temperature behavior and life state.
+    /// Updates temperature based on window state and AC upgrades, enforces alive temperature limits with a grace period,
+    /// and publishes temperature changes and death events to the rest of the game.
+    /// </summary>
     public sealed class CactusThermodynamics : MonoBehaviour
     {
         [Header("References")]

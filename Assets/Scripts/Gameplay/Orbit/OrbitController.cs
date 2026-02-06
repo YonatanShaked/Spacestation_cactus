@@ -4,6 +4,11 @@ using UnityEngine;
 
 namespace Gameplay.Orbit
 {
+    /// <summary>
+    /// Controls the orbital day/night cycle of the space station.
+    /// Alternates between Sunlit and Eclipse phases based on configurable durations
+    /// and broadcasts orbit phase changes to the rest of the game via events.
+    /// </summary>
     public sealed class OrbitController : MonoBehaviour
     {
         [Header("References")]

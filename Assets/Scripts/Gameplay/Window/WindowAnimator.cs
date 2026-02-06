@@ -3,6 +3,11 @@ using UnityEngine;
 
 namespace Gameplay.Window
 {
+    /// <summary>
+    /// Drives window opening and closing animations based on window state events.
+    /// Listens to window state changes and plays the corresponding animator states while avoiding redundant animation triggers.
+    /// Isolated from gameplay logic and depends only on animation state names.
+    /// </summary>
     [RequireComponent(typeof(Animator))]
     public sealed class WindowAnimator : MonoBehaviour
     {

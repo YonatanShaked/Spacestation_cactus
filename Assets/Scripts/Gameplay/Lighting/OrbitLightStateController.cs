@@ -11,6 +11,11 @@ namespace Gameplay.Lighting
         SunlitWindowClosed
     }
 
+    /// <summary>
+    /// Translates orbit and window gameplay states into discrete lighting states.
+    /// Listens to orbit and window events and invokes configurable UnityEvents to drive lighting behavior without hard-coded dependencies.
+    /// Acts as a state resolver between gameplay logic and scene lighting.
+    /// </summary>
     public sealed class OrbitLightStateController : MonoBehaviour
     {
         [Header("Orbit State Light Events")]

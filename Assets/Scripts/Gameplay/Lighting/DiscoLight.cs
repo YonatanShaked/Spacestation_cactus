@@ -2,6 +2,11 @@ using UnityEngine;
 
 namespace Gameplay.Lighting
 {
+    /// <summary>
+    /// Simple decorative light controller that cycles light color over time.
+    /// Optionally applies a pulsing intensity effect to create a disco-style lighting effect.
+    /// Intended for non-critical visual flair and isolated from core gameplay logic.
+    /// </summary>
     [RequireComponent(typeof(Light))]
     public sealed class DiscoLight : MonoBehaviour
     {

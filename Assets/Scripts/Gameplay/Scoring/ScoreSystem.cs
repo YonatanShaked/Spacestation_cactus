@@ -4,6 +4,11 @@ using UnityEngine;
 
 namespace Gameplay.Scoring
 {
+    /// <summary>
+    /// Tracks player score, multiplier, and safe-temperature streak progression.
+    /// Awards points only while Sunlit, window open, and cactus alive, and increases multiplier by doubling after sustained safe temperature intervals.
+    /// Publishes score, multiplier, and streak updates via events and supports spending score for upgrades.
+    /// </summary>
     public sealed class ScoreSystem : MonoBehaviour
     {
         [Header("References")]

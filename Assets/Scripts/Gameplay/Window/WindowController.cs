@@ -5,6 +5,11 @@ using Random = UnityEngine.Random;
 
 namespace Gameplay.Window
 {
+    /// <summary>
+    /// Controls window gameplay behavior and state transitions.
+    /// Handles automatic opening at sunrise with failure chance, manual player interaction, and forced closing during eclipse.
+    /// Reacts to orbit and upgrade events and publishes window state changes to the rest of the game.
+    /// </summary>
     public sealed class WindowController : MonoBehaviour
     {
         [Header("References")]

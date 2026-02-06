@@ -8,6 +8,11 @@ using UnityEngine.InputSystem;
 
 namespace Debugging
 {
+    /// <summary>
+    /// Provides editor-only keyboard shortcuts for testing gameplay systems.
+    /// Allows triggering upgrades, window actions, AC pulse usage, and game restart without UI interaction.
+    /// Intended strictly for development and debugging workflows and excluded from runtime builds.
+    /// </summary>
     public sealed class DebugHotkeys : MonoBehaviour
     {
         [Header("References")]

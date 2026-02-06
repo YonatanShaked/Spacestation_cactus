@@ -5,6 +5,11 @@ using UnityEngine;
 
 namespace Gameplay.AC
 {
+    /// <summary>
+    /// Handles AC-related visual effects.
+    /// Plays the AC fan animation when purchased and controls the one-shot AC pulse effect when triggered.
+    /// Enforces non-spammable pulse playback using a coroutine and internal state.
+    /// </summary>
     public sealed class AcAnimator : MonoBehaviour
     {
         [Header("References")]

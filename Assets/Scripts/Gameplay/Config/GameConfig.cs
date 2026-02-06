@@ -2,6 +2,11 @@ using UnityEngine;
 
 namespace Gameplay.Config
 {
+    /// <summary>
+    /// Central configuration asset for gameplay tuning and balancing.
+    /// Holds all designer-editable values for orbit timing, window logic, temperature, scoring, upgrades, and visual thresholds.
+    /// Shared read-only across systems to avoid hardcoded values and enable rapid iteration without code changes.
+    /// </summary>
     [CreateAssetMenu(menuName = "Config/GameConfig", fileName = "GameConfig")]
     public class GameConfig : ScriptableObject
     {

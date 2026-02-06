@@ -4,6 +4,11 @@ using UnityEngine;
 
 namespace Debugging
 {
+    /// <summary>
+    /// Debug-only event logger for observing gameplay events in the Unity console.
+    /// Subscribes to core game events and prints their payloads to aid development and debugging.
+    /// Compiled only in editor and development builds to avoid impacting production performance.
+    /// </summary>
     public sealed class DebugConsoleLogger : MonoBehaviour
     {
         private void OnEnable()

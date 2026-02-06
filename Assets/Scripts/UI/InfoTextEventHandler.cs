@@ -4,6 +4,11 @@ using UnityEngine;
 
 namespace UI
 {
+    /// <summary>
+    /// Updates on-screen HUD text elements in response to gameplay events.
+    /// Listens to core game, scoring, and upgrade events and reflects the current game state using TextMeshPro UI elements.
+    /// Keeps UI presentation fully decoupled from gameplay logic through event-driven updates.
+    /// </summary>
     public sealed class InfoTextEventHandler : MonoBehaviour
     {
         [Header("Core HUD")]

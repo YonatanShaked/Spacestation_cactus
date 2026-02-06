@@ -6,6 +6,11 @@ using UnityEngine;
 
 namespace Gameplay.AC
 {
+    /// <summary>
+    /// Controls AC Pulse gameplay logic.
+    /// Validates purchase/ready state, spends score cost, applies instant cooling, and publishes pulse readiness and trigger events.
+    /// Resets pulse availability at the start of each Sunlit orbit phase.
+    /// </summary>
     public sealed class AcPulseController : MonoBehaviour
     {
         [Header("References")]
