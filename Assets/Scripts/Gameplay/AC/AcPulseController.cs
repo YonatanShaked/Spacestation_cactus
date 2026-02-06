@@ -4,7 +4,7 @@ using Gameplay.Scoring;
 using Gameplay.Cactus;
 using UnityEngine;
 
-namespace Gameplay.Upgrades
+namespace Gameplay.AC
 {
     public sealed class AcPulseController : MonoBehaviour
     {

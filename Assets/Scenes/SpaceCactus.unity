@@ -298,7 +298,6 @@ GameObject:
   - component: {fileID: 1724522528}
   - component: {fileID: 1724522527}
   - component: {fileID: 1724522529}
-  - component: {fileID: 1724522530}
   - component: {fileID: 1724522531}
   - component: {fileID: 1724522532}
   m_Layer: 0
@@ -388,20 +387,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Upgrades.UpgradeSystem
   config: {fileID: 11400000, guid: 9cc7a094474826446bf47c6e79c262cd, type: 2}
---- !u!114 &1724522530
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1724522522}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e205b2d5aadeb4645b2292f0c8eee265, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Gameplay.Upgrades.UpgradeToWindowBridge
-  upgrades: {fileID: 1724522529}
-  window: {fileID: 1724522525}
 --- !u!114 &1724522531
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -599,7 +584,7 @@ PrefabInstance:
     - target: {fileID: 2477717913699956386, guid: a02feea000a2c1e469b9001449e58685, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1724522530}
+      objectReference: {fileID: 0}
     - target: {fileID: 2519678678084333012, guid: a02feea000a2c1e469b9001449e58685, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
