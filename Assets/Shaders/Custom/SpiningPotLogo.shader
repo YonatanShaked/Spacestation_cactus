@@ -19,21 +19,31 @@ Shader "Custom/SpiningPotLogo"
 
         Pass
         {
+            Tags { "LightMode"="UniversalForward" }
+
             HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
+
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS_CASCADE
+
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 
             struct Attributes
             {
                 float4 positionOS : POSITION;
-                float2 uv : TEXCOORD0;
+                float3 normalOS   : NORMAL;
+                float2 uv         : TEXCOORD0;
             };
 
             struct Varyings
             {
                 float4 positionHCS : SV_POSITION;
-                float2 uv : TEXCOORD0;
+                float2 uv          : TEXCOORD0;
+                float3 normalWS    : TEXCOORD1;
+                float3 positionWS  : TEXCOORD2;
             };
 
             TEXTURE2D(_LogoTex);
@@ -50,7 +60,9 @@ Shader "Custom/SpiningPotLogo"
             Varyings vert(Attributes IN)
             {
                 Varyings OUT;
-                OUT.positionHCS = TransformObjectToHClip(IN.positionOS.xyz);
+                OUT.positionWS = TransformObjectToWorld(IN.positionOS.xyz);
+                OUT.positionHCS = TransformWorldToHClip(OUT.positionWS);
+                OUT.normalWS = TransformObjectToWorldNormal(IN.normalOS);
                 OUT.uv = IN.uv;
                 return OUT;
             }
@@ -61,21 +73,25 @@ Shader "Custom/SpiningPotLogo"
 
                 float2 halfSize = _LogoSize.xy * 0.5;
                 float2 d = abs(IN.uv - _LogoCenter.xy);
-
                 float rectMask = step(d.x, halfSize.x) * step(d.y, halfSize.y);
 
                 float2 safeSize = max(_LogoSize.xy, float2(1e-5, 1e-5));
-                float2 invSize = rcp(safeSize);
-                float2 logoUV = (IN.uv - (_LogoCenter.xy - halfSize)) * invSize;
+                float2 logoUV = (IN.uv - (_LogoCenter.xy - halfSize)) / safeSize;
 
                 logoUV.x = frac(logoUV.x + _Time.y * _LogoSpinTurnsPerSecond);
 
                 half logoMask = SAMPLE_TEXTURE2D(_LogoTex, sampler_LogoTex, logoUV).r;
+                half m = saturate(logoMask) * rectMask;
 
-                half m = saturate(logoMask) * (half)rectMask;
+                half3 albedo = lerp(baseRgb, _LogoColor.rgb, m);
 
-                half3 finalRgb = lerp(baseRgb, _LogoColor.rgb, m);
-                return half4(finalRgb, 1.0);
+                Light mainLight = GetMainLight();
+                half3 normalWS = normalize(IN.normalWS);
+
+                half NdotL = saturate(dot(normalWS, mainLight.direction));
+                half3 litColor = albedo * (mainLight.color * NdotL);
+
+                return half4(litColor, 1.0);
             }
             ENDHLSL
         }
