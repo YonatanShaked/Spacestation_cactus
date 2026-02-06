@@ -5,6 +5,8 @@ The player must manage temperature, sunlight, and upgrades while reacting to orb
 
 The project focuses on **clean architecture**, **event-driven design**, and **XR-ready gameplay systems**, rather than visual complexity.
 
+You can watch an [example gameplay video](https://drive.google.com/file/d/1eBZv84CGPfgz1RY_5XbbOpLwSAcU4ALO/view?usp=sharing)
+
 ---
 
 ## 🎮 Core Gameplay
